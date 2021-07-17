@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+		 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>pl.jalokim.parentpom</groupId>
+        <artifactId>root-parent-pom</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>pl.jalokim.coderules</groupId>
+    <artifactId>code-style-rules</artifactId>
+    <packaging>jar</packaging>
+    <version>${main-version}.${minor-version}</version>
+
+    <properties>
+        <main-version>1.0</main-version>
+        <minor-version>0-SNAPSHOT</minor-version>
+
+        <release.project.name>code style rules</release.project.name>
+        <release.project.description>code style rules for checkstyle, pmd, findbug, codenarc, and archunit rules code</release.project.description>
+        <release.project.repository-name>code-style-rules</release.project.repository-name>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-remote-resources-plugin</artifactId>
+                <version>${plugin.remote.resources.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>bundle</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>checkstyle/*.*</include>
+                                <include>codenarc/*.*</include>
+                                <include>pmd/*.*</include>
+                                <include>formatter/*.*</include>
+                                <include>spotbugs/*.*</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
