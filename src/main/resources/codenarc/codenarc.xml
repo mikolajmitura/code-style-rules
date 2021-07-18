@@ -13,6 +13,8 @@ http://codenarc.org/ruleset/1.0 "
     <exclude name="SpaceAfterOpeningBrace"/>
     <exclude name="SpaceAfterClosingBrace"/>
     <exclude name="SpaceBeforeClosingBrace"/>
+    <exclude name="Indentation"/>
+    <exclude name="ClassEndsWithBlankLine"/>
   </ruleset-ref>
   <ruleset-ref path='rulesets/groovyism.xml'>
     <exclude name="ClosureAsLastMethodParameter"/>
