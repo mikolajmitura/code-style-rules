@@ -20,6 +20,8 @@
         <main-version>1.0</main-version>
         <minor-version>0-SNAPSHOT</minor-version>
 
+        <java.version>1.8</java.version>
+
         <release.project.name>code style rules</release.project.name>
         <release.project.description>code style rules for checkstyle, pmd, findbug, codenarc, and archunit rules code</release.project.description>
         <release.project.repository-name>code-style-rules</release.project.repository-name>

@@ -22,6 +22,7 @@ import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.Optional;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -104,7 +105,7 @@ public class MandatoryAnnotationArchRules {
             .and().areDeclaredInClassesThat().areAnnotatedWith(Entity.class)
             .should(BE_ENUMERATED_WITH_STRING);
 
-    private static final DescribedPredicate<JavaField> IS_ENUM_TYPE = new DescribedPredicate<>("is enum type") {
+    private static final DescribedPredicate<JavaField> IS_ENUM_TYPE = new DescribedPredicate<JavaField>("is enum type") {
 
         @Override
         public boolean apply(JavaField input) {
@@ -112,27 +113,28 @@ public class MandatoryAnnotationArchRules {
         }
     };
 
-    private static final ArchCondition<JavaField> BE_ENUMERATED_WITH_STRING = new ArchCondition<>("be annotated with @Enumerated(EnumType.STRING") {
+    private static final ArchCondition<JavaField> BE_ENUMERATED_WITH_STRING = new ArchCondition<JavaField>("be annotated with @Enumerated(EnumType.STRING") {
 
         @Override
-        @SuppressWarnings("blockRcurly")
+        @SuppressWarnings({"blockRcurly", "PMD.AccessorMethodGeneration"})
         public void check(JavaField item, ConditionEvents events) {
             Set<JavaAnnotation<JavaField>> annotations = item.getAnnotations();
             String fieldName = item.getName();
             String ownerName = item.getOwner().getName();
             String msg = String.format(ENUM_NOT_ANNOTATED_MSG_FORMAT, fieldName, ownerName);
 
-            annotations.stream()
+            Optional<JavaAnnotation<JavaField>> foundEnumerated = annotations.stream()
                 .filter(it -> Enumerated.class.getCanonicalName().equals(it.getRawType().getFullName()))
-                .findFirst()
-                .ifPresentOrElse(found -> {
-                        Object enumType = found.getProperties().get("value");
-                        if (EnumType.STRING.name().equals(enumType)) {
-                            events.add(new SimpleConditionEvent(item, false, msg));
-                        }
-                        },
-                    () -> events.add(new SimpleConditionEvent(item, false, msg))
-                );
+                .findFirst();
+
+            if (foundEnumerated.isPresent()) {
+                Object enumType = foundEnumerated.get().getProperties().get("value");
+                if (EnumType.STRING.name().equals(enumType)) {
+                    events.add(new SimpleConditionEvent(item, false, msg));
+                }
+            } else {
+                events.add(new SimpleConditionEvent(item, false, msg));
+            }
         }
     };
 }
