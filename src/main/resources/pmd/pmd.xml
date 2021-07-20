@@ -24,6 +24,7 @@
         <exclude name="TestClassWithoutTestCases"/>
         <exclude name="AvoidEnumAsIdentifier"/>
         <exclude name="AvoidCatchingThrowable"/>
+        <exclude name="AvoidLiteralsInIfCondition"/>
     </rule>
 
     <rule ref="category/java/design.xml">
@@ -48,6 +49,7 @@
         <exclude name="AvoidSynchronizedAtMethodLevel"/>
         <exclude name="AvoidUsingVolatile"/> <!--volatile is used often as a memory barrier -->
         <exclude name="DoNotUseThreads"/>
+        <exclude name="UseConcurrentHashMap"/>
     </rule>
 
     <rule ref="category/java/bestpractices.xml">
@@ -67,6 +69,8 @@
         <exclude name="JUnit4TestShouldUseBeforeAnnotation"/>
         <exclude name="JUnit4TestShouldUseTestAnnotation"/>
         <exclude name="JUnitUseExpected"/>
+        <exclude name="UnusedImports"/>
+        <exclude name="AvoidStringBufferField"/>
     </rule>
 
     <rule ref="category/java/codestyle.xml/LinguisticNaming">
