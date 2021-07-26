@@ -34,6 +34,7 @@ http://codenarc.org/ruleset/1.0 "
     <exclude name="UnnecessaryDotClass"/>
     <exclude name="UnnecessaryGetter"/>
     <exclude name="UnnecessaryObjectReferences "/>
+    <exclude name="UnnecessarySetter "/>
   </ruleset-ref>
   <ruleset-ref path='rulesets/unused.xml'/>
 </ruleset>

@@ -13,6 +13,7 @@ import static pl.jalokim.coderules.archunit.ArchRulesConstants.SERVICE_SUFFIX;
 import com.querydsl.core.types.dsl.EntityPathBase;
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaAnnotation;
+import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaField;
 import com.tngtech.archunit.core.domain.JavaModifier;
 import com.tngtech.archunit.junit.ArchTest;
@@ -24,6 +25,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -38,6 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MandatoryAnnotationArchRules {
 
     private static final String ENUM_NOT_ANNOTATED_MSG_FORMAT = "Field '%s' in class: '%s' not annotated with @Enumerated(EnumType.STRING)";
+    private static final String CLASS_NOT_ANNOTATED_SERVICE_MSG = "class '%s' not annotated with @Service or with other other annotation which it contains";
 
     @ArchTest
     public final ArchRule facadeShouldBeAnnotatedWithTransactionalAndValidatedAnnotation =
@@ -96,7 +99,8 @@ public class MandatoryAnnotationArchRules {
         classes().that().haveSimpleNameEndingWith(SERVICE_SUFFIX)
             .and().areNotInterfaces()
             .and().doNotHaveModifier(JavaModifier.ABSTRACT)
-            .should().beAnnotatedWith(Service.class);
+            .should().notBeAnnotatedWith(Service.class)
+            .orShould(SHOULD_BE_ANNOTATE_WITH_SERVICE);
 
     @ArchTest
     public final ArchRule enumFieldsInEntitiesShouldBeEnumeratedByString =
@@ -134,6 +138,33 @@ public class MandatoryAnnotationArchRules {
                 }
             } else {
                 events.add(new SimpleConditionEvent(item, false, msg));
+            }
+        }
+    };
+
+    private static final ArchCondition<JavaClass> SHOULD_BE_ANNOTATE_WITH_SERVICE = new ArchCondition<JavaClass>(
+        "be annotated with @Service or with other annotation witch contains it") {
+
+        @Override
+        public void check(JavaClass javaClass, ConditionEvents conditionEvents) {
+            Set<JavaAnnotation<JavaClass>> annotations = javaClass.getAnnotations();
+            AtomicReference<Boolean> found = new AtomicReference<>(false);
+            searchForServiceAnnotation(annotations, found);
+            if (!found.get()) {
+                conditionEvents.add(new SimpleConditionEvent(javaClass, false, String.format(
+                    CLASS_NOT_ANNOTATED_SERVICE_MSG, javaClass.getFullName()
+                )));
+                throw new IllegalArgumentException("");
+            }
+        }
+
+        private void searchForServiceAnnotation(Set<JavaAnnotation<JavaClass>> annotations, AtomicReference<Boolean> found) {
+            for (JavaAnnotation<JavaClass> annotation : annotations) {
+                if (annotation.getRawType().getFullName().equals(Service.class.getCanonicalName())) {
+                    found.set(true);
+                    break;
+                }
+                searchForServiceAnnotation(annotation.getRawType().getAnnotations(), found);
             }
         }
     };
