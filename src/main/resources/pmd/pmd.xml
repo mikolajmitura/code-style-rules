@@ -45,6 +45,7 @@
         <exclude name="CommentRequired"/>
         <exclude name="CommentSize"/>
         <exclude name="UncommentedEmptyConstructor"/>
+        <exclude name="UncommentedEmptyMethodBody"/>
     </rule>
 
     <rule ref="category/java/multithreading.xml">
