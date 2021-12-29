@@ -106,14 +106,15 @@
         <exclude name="OnlyOneReturn"/>
         <exclude name="DefaultPackage"/> <!--use of package level improves encapsulation -->
         <exclude name="AtLeastOneConstructor"/>
-        <exclude name="AvoidPrefixingMethodParameters"/> <!-- Required for CDM -->
+        <exclude name="AvoidPrefixingMethodParameters"/>
         <exclude name="MethodArgumentCouldBeFinal"/>
         <exclude name="LocalVariableCouldBeFinal"/>
         <exclude name="LongVariable"/> <!--explicit is better than implicit -->
         <exclude name="ShortVariable"/> <!--does not make sense in Java8, often used in lambdas -->
         <exclude name="ShortMethodName"/>
         <exclude name="AbstractNaming"/>
-        <exclude name="ShortClassName"/> <!-- Required for CDM -->
+        <exclude name="ShortClassName"/>
         <exclude name="CallSuperInConstructor"/>
+        <exclude name="UnnecessaryImport"/>
     </rule>
 </ruleset>
