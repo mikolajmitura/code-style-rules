@@ -16,6 +16,7 @@ http://codenarc.org/ruleset/1.0 "
     <exclude name="Indentation"/>
     <exclude name="ClassEndsWithBlankLine"/>
     <exclude name="SpaceAroundClosureArrow"/>
+    <exclude name="ClassStartsWithBlankLine"/>
   </ruleset-ref>
   <ruleset-ref path='rulesets/groovyism.xml'>
     <exclude name="ClosureAsLastMethodParameter"/>
