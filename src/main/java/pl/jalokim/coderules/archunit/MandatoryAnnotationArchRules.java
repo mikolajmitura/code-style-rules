@@ -26,6 +26,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -92,6 +93,7 @@ public class MandatoryAnnotationArchRules {
         classes().that().haveSimpleNameEndingWith(ENTITY_SUFFIX)
             .and().areNotAssignableTo(EntityPathBase.class)
             .and().areNotAnnotatedWith(MappedSuperclass.class)
+            .and().areNotAnnotatedWith(Embeddable.class)
             .should().beAnnotatedWith(Entity.class);
 
     @ArchTest
